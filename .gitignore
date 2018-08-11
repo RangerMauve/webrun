@@ -62,3 +62,6 @@ typings/
 
 # The web cache folder
 .web-cache
+
+# Where stuff gets persisted
+.nwl

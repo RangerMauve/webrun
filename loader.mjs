@@ -1,8 +1,8 @@
 import path from 'path';
 import process from 'process';
-import Module from 'module';
 import child_process from "child_process";
 import url from "url";
+import fs from "fs";
 
 /*
 PLEASE DON'T JUDGE ME FOR MY SHITTY CODE!
@@ -17,22 +17,12 @@ import IDBKeyRange from "fake-indexeddb/lib/FDBKeyRange";
 
 import Websocket from "ws";
 
-import LocalStorage from "node-localstorage"
+import LocalStorageModule from "node-localstorage"
 
-global.self = global;
-global.fetch = fetch;
-global.URLSearchParams = URLSearchParams;
-global.FormData = FormData;
-global.Url = url.Url;
-global.Websocket = Websocket;
-global.indexedDB = indexedDB;
-global.IDBKeyRange = IDBKeyRange;
-global.localStorage = new LocalStorage("./localstorage");
-
-const CACHE_FOLDER = ".web-cache";
+const CACHE_FOLDER = ".nwl/web-cache";
+const LOCALSTORAGE_FOLDER = ".nwl/localstorage";
 const SEPARATOR_REPLACER = "_FILE_SEPARATOR_HACK_";
 
-const builtins = Module.builtinModules;
 const JS_EXTENSIONS = new Set(['.js']);
 
 const baseURL = new URL('file://');
@@ -43,6 +33,22 @@ var isWin = /^win/.test(process.platform);
 const moduleURL = import.meta.url;
 const moduleFolder = isWin ? moduleURL.slice(8, -11) : moduleURL.slice(7, -11);
 const cacheLocation = "file://" + path.join(moduleFolder, CACHE_FOLDER);
+const localstorageLocation = path.join(moduleFolder, LOCALSTORAGE_FOLDER);
+
+try {
+	fs.mkdirSync(path.join(moduleFolder, ".nwl"));
+} catch(e) {}
+
+global.self = global;
+global.window = global;
+global.fetch = fetch;
+global.URLSearchParams = URLSearchParams;
+global.FormData = FormData;
+global.Url = url.Url;
+global.Websocket = Websocket;
+global.indexedDB = indexedDB;
+global.IDBKeyRange = IDBKeyRange;
+global.localStorage = new LocalStorageModule.LocalStorage(localstorageLocation);
 
 export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
 	let resolvedSpecifier = specifier;

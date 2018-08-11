@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 
-const CACHE_FOLDER = ".web-cache";
+const CACHE_FOLDER = ".nwl/web-cache";
 const SEPARATOR_REPLACER = "_FILE_SEPARATOR_HACK_";
 
 const url = process.argv[2];
