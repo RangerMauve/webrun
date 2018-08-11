@@ -25,9 +25,9 @@ Bug reports welcome!
 ## Usage:
 
 ```
-npm install --save node-web-loader
+npm install --save @rangermauve/web-loader
 
-node --experimental-modules --loader ./node_modules/node-web-loader/loader.mjs example.js
+node --experimental-modules --loader ./node_modules/@rangermauve/web-loader/loader.mjs example.js
 ```
 
 Then in your JS: 
