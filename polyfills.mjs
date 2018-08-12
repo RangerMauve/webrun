@@ -8,6 +8,7 @@ import IDBKeyRange from "fake-indexeddb/lib/FDBKeyRange";
 import Websocket from "ws";
 import LocalStorageModule from "node-localstorage";
 const LocalStorage = LocalStorageModule.LocalStorage;
+import DatArchive from "node-dat-archive";
 
 export default function addPolyfills() {
 	global.self = global;
@@ -21,4 +22,5 @@ export default function addPolyfills() {
 	global.localStorage = new LocalStorage(
 		CONSTANTS.normalized(CONSTANTS.LOCALSTORAGECACHE)
 	);
+	global.DatArchive = DatArchive;
 }

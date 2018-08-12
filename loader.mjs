@@ -12,6 +12,8 @@ import CONSTANTS from "./constants.mjs";
 const baseURL = new URL('file://');
 baseURL.pathname = `${process.cwd()}/`;
 
+const LOADERS = /^(dat|https)\:\/\//
+
 // Set up the cache folder first
 try {
 	fs.mkdirSync(CONSTANTS.normalized(CONSTANTS.CACHE));
@@ -29,18 +31,37 @@ export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
 		normalizedParent.pathname && 
 		normalizedParent.pathname.startsWith(CONSTANTS.WEBCACHE.pathname);
 
-	if (isRelativeWeb) {
+	// If it's relative to a web import, but not an absolute URL
+	if (isRelativeWeb && !LOADERS.test(specifier)) {
 		// Get the original HTTPS url for the parent
 		const website = "https://" + normalizedParent.pathname.slice(CONSTANTS.WEBCACHE.pathname.length)
-		resolvedSpecifier = (new URL(specifier, website)).toString();
+		resolvedSpecifier = (new URL(specifier, website)).href;
+	}
+
+	const isRelativeDat = 
+		normalizedParent.pathname &&
+		normalizedParent.pathname.startsWith(CONSTANTS.DATCACHE.pathname);
+
+	// If it's relative to a Dat import, but not an absolute URL
+	if (isRelativeDat && !LOADERS.test(specifier)) {
+		// Get the original HTTPS url for the parent
+		const website = "dat://" + normalizedParent.pathname.slice(CONSTANTS.DATCACHE.pathname.length)
+		resolvedSpecifier = (new URL(specifier, website)).href;
 	}
 
 	if(resolvedSpecifier.startsWith("https://")) {
-		const toRun = `node --experimental-modules ${CONSTANTS.normalized(CONSTANTS.MODULEFOLDER)}/httpload.mjs ${resolvedSpecifier}`;
-		
-		child_process.execSync(toRun);
+		runLocal("httpload.mjs", resolvedSpecifier);
 
 		const file = (new URL(resolvedSpecifier.slice(8), CONSTANTS.WEBCACHE));
+
+		return {
+			url: file.href,
+			format: "esm"
+		};
+	} else if(resolvedSpecifier.startsWith("dat://")) {
+		runLocal("datload.mjs", resolvedSpecifier);
+
+		const file = (new URL(resolvedSpecifier.slice(6), CONSTANTS.DATCACHE));
 
 		return {
 			url: file.href,
@@ -58,4 +79,11 @@ export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
 			format: 'esm'
 		};
 	}
+}
+
+function runLocal(name, ...commands) {
+	const scriptLocation = `${CONSTANTS.normalized(CONSTANTS.MODULEFOLDER)}/${name}`;
+	const toRun = `node --experimental-modules ${scriptLocation} ${commands.join(" ")}`;
+
+	return child_process.execSync(toRun);
 }

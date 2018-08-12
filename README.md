@@ -9,22 +9,9 @@ As such, the modules won't have access to node builtins.
 
 Bug reports welcome!
 
-## Progress:
-
-- [x] Able to load HTTPS URLs
-- [x] Relative URLs loaded from HTTPS modules should work
-- [ ] Add browser globals
-	- [x] [fetch](https://www.npmjs.com/package/node-fetch)
-	- [x] [websocket](https://www.npmjs.com/package/ws)
-	- [x] [localStorage](https://www.npmjs.com/package/node-localstorage) (Persists to `./.nwl/localstorage`)
-	- [x] [indexDB](https://www.npmjs.com/package/fake-indexeddb) (Doesn't persist)
-- [ ] Dat protocol support
-	- [ ] Load from Dat URLs
-	- [ ] DatArchive globals (whatever other Beaker stuff)
-
 ## Usage:
 
-```
+```bash
 npm install --save @rangermauve/web-loader
 
 node --experimental-modules --loader ./node_modules/@rangermauve/web-loader/loader.mjs example.js
@@ -36,6 +23,30 @@ Then in your JS:
 import example from "https://rangermauve.hashbase.io/esm.js";
 
 example();
+```
+
+## Progress:
+
+- [x] Able to load HTTPS URLs
+- [x] Relative URLs loaded from HTTPS modules should work
+- [ ] Add browser globals
+	- [x] [fetch](https://www.npmjs.com/package/node-fetch)
+	- [x] [websocket](https://www.npmjs.com/package/ws)
+	- [x] [localStorage](https://www.npmjs.com/package/node-localstorage) (Persists to `./.nwl/localstorage`)
+	- [x] [indexDB](https://www.npmjs.com/package/fake-indexeddb) (Doesn't persist)
+- [x] Dat protocol support
+	- [x] Load from Dat URLs
+	- [x] DatArchive global
+	- [ ] Experimental Beaker APIs (does it make sense?)
+
+You can test it out by cloning and running one of the following:
+
+```
+npm run example
+
+# or
+
+npm run example-dat
 ```
 
 ## How it works:
@@ -55,3 +66,7 @@ Luckily, Node added an API which lets you cheat.
 That's exactly how this works. It intercepts calls to `https://` imports, downloads the content to the `./.nwl/web-cache` folder, and tells Node to load the file as `esm`.
 
 Some browser APIs have been added to the global scope so hopefully a lot of modules made for browsers should work here, too.
+
+In addition to loading content from `https://` URLs, this loader also supports `dat://` URLs. This way you can download code right from the peer to peer web!
+
+PRs for additional protocols are welcome! All you need to do is make a script that takes a URL as a parameter and add it to the list of protocols that are handled.
