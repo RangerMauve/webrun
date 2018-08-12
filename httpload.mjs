@@ -1,37 +1,21 @@
 import https from "https";
 import fs from "fs";
-import path from "path";
-import os from "os";
 
-const CACHE_FOLDER = ".nwl/web-cache";
-const SEPARATOR_REPLACER = "_FILE_SEPARATOR_HACK_";
+import mkdirp from "mkdirp";
+import CONSTANTS from "./constants.mjs";
 
 const url = process.argv[2];
 
-var file = url.replace(/^https:\/\//i, "").replace(/[\\\/]/, SEPARATOR_REPLACER);
+const file = new URL("./" + url.slice(8), CONSTANTS.WEBCACHE);
+const fileFolder = new URL('./', file);
 
-var isWin = /^win/.test(process.platform);
+const fileFolderLocation = CONSTANTS.normalized(fileFolder);
+const finalLocation = CONSTANTS.normalized(file);
 
-const moduleURL = import.meta.url;
-const moduleFolder = isWin ? moduleURL.slice(8, -13) : moduleURL.slice(7, -13);
-const cacheLocation = path.join(moduleFolder, CACHE_FOLDER);
-
-const finalLocation = path.join(cacheLocation, file);
-
-fs.stat(cacheLocation, function(err, stat) {
-	if (!err) {
-		// Folder already exists
-		tryDownload();
-	} else if (err.code === "ENOENT") {
-		// Folder hasn't been made yet, create it
-		fs.mkdir(cacheLocation, function(err) {
-			if(err) throw err;
-			tryDownload();
-		})
-	} else {
-		throw err;
-	}
-})
+mkdirp(fileFolderLocation, (err) => {
+	if(err) throw err;
+	tryDownload();
+});
 
 function tryDownload(){
 	fs.stat(finalLocation, function(err, stat) {

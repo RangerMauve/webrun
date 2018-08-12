@@ -52,6 +52,6 @@ Luckily, Node added an API which lets you cheat.
 
 `child_process.execSync` can let you run a Node program that does async things in a separate process, while the current process gets blocked!
 
-That's exactly how this works. It intercepts calls to `https://` imports, downloads the content to the `node_modules/node-web-loader/.nwl/web-cache` folder, and tells Node to load the file as `esm`.
+That's exactly how this works. It intercepts calls to `https://` imports, downloads the content to the `./.nwl/web-cache` folder, and tells Node to load the file as `esm`.
 
 Some browser APIs have been added to the global scope so hopefully a lot of modules made for browsers should work here, too.
