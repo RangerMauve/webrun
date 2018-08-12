@@ -1,6 +1,7 @@
 import path from 'path';
 import child_process from "child_process";
 import fs from "fs";
+import Module from 'module';
 
 /*
  PLEASE DON'T JUDGE ME FOR MY SHITTY CODE!
@@ -11,6 +12,8 @@ import CONSTANTS from "./constants.mjs";
 
 const baseURL = new URL('file://');
 baseURL.pathname = `${process.cwd()}/`;
+
+const builtins = Module.builtinModules;
 
 const LOADERS = /^(dat|https)\:\/\//
 
@@ -23,6 +26,13 @@ try {
 polyfills();
 
 export function resolve(specifier, parentModuleURL = baseURL, defaultResolve) {
+	if (builtins.includes(specifier)) {
+		return {
+			url: specifier,
+			format: 'builtin'
+		};
+	}
+
 	let resolvedSpecifier = specifier;
 	// Make sure the parent is a URL object!
 	let normalizedParent = new URL(parentModuleURL || "");

@@ -3,7 +3,7 @@ A custom module loader and global shim for Node to make it compatible with the b
 
 The goal is to make code that works in browsers first, but can run in Node by using this loader.
 
-As such, the modules won't have access to node builtins.
+You can `import` builtin node modules, but modules installed through NPM are no longer supported because it would require the funky `mjs` stuff we have in node now.
 
 **Warning:** this is a huge hack and is probably very inefficient. Use at your own risk!
 
