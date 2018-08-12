@@ -21,8 +21,10 @@ Then in your JS:
 
 ```javascript
 import example from "https://rangermauve.hashbase.io/esm.js";
+import p2pexample from "dat://rangermauve.hashbase.io/esm.js";
 
 example();
+p2pexample();
 ```
 
 ## Progress:
