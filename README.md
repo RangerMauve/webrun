@@ -35,14 +35,20 @@ p2pexample();
 	- [x] [fetch](https://www.npmjs.com/package/node-fetch)
 	- [x] [websocket](https://www.npmjs.com/package/ws)
 	- [x] [localStorage](https://www.npmjs.com/package/node-localstorage) (Persists to `./.nwl/localstorage`)
-	- [x] [indexDB](https://www.npmjs.com/package/fake-indexeddb) (Doesn't persist)
-	- [ ] [SubtleCrypto](https://github.com/PeculiarVentures/node-webcrypto-ossl)
+	- [x] [indexDB](https://www.npmjs.com/package/fake-indexeddb) (Doesn't persist, should remove)
+	- [ ] crypto.randomBytes() using node's crypto module.
+	- [ ] [SubtleCrypto](https://github.com/PeculiarVentures/node-webcrypto-p11) (or with [this](https://github.com/PeculiarVentures/node-webcrypto-ossl))
+	- [ ] [TextEncoder / TextDecoder](https://github.com/modulesio/text-encoder)
+	- [ ] WebRTC
 - [x] Dat protocol support
 	- [x] Load from Dat URLs
 	- [x] DatArchive global
 	- [ ] Experimental Beaker APIs (does it make sense?)
-		- [ ] DatPeers
+		- [ ] DatPeers [Issue](https://github.com/beakerbrowser/dat-node/issues/3)
 		- [ ] Library
+- [ ] Rewrite using VM module https://nodejs.org/api/vm.html#vm_module_link_linker (Node 9.6)
+- [ ] Rewrite using [@beaker/dat-node](https://github.com/beakerbrowser/dat-node) for dat support
+- [ ] CLI flag for enabling / disabling node modules.
 
 You can test it out by cloning and running one of the following:
 
