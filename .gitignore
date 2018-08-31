@@ -64,4 +64,4 @@ typings/
 .web-cache
 
 # Where stuff gets persisted
-.nwl
+.webrun
