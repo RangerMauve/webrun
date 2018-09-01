@@ -12,10 +12,14 @@ Bug reports welcome!
 ## Usage:
 
 ```bash
+# Install the CLI
 npm install -g @rangermauve/webrun
 
-// Load a module from the web and log to the console
+# Load a module from the web and log to the console
 webrun "https://rangermauve.hashbase.io/example.js"
+
+# Run a local file
+webrun ./example.js
 ```
 
 Then in your JS:
