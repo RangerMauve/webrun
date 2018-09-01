@@ -51,9 +51,10 @@ PRs for additional protocols are welcome! All you need is an async function that
 
 ## Progress:
 
+- [x] Able to load from the filesystem
 - [x] Able to load HTTPS URLs
-- [x] Relative URLs loaded from HTTPS modules should work
-- [ ] Add [browser globals](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
+- [x] Able to load Dat URLs
+- [ ] [Browser APIs](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
 	- [x] console.*
 	- [x] timers
 	- [x] [atob and btoa](https://www.npmjs.com/package/abab)
@@ -72,14 +73,3 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [ ] Experimental Beaker APIs (does it make sense?)
 		- [ ] DatPeers [Issue](https://github.com/beakerbrowser/dat-node/issues/3)
 		- [ ] Library
-- [x] Rewrite using VM module https://nodejs.org/api/vm.html#vm_module_link_linker (Node 9.6)
-	- [x] Load modules
-		- [x] File
-		- [x] HTTPS
-		- [x] Dat
-	- [x] Cache existing modules
-	- [x] Cache module contents to disk
-		- [x]	HTTPS
-		- [x] Dat
-- [x] Rewrite using [@beaker/dat-node](https://github.com/beakerbrowser/dat-node) for dat support
-- [x] CLI flag for enabling / disabling node modules. (Node modules are forbidden)
