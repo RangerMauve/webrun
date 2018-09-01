@@ -66,7 +66,7 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [x] [websocket](https://www.npmjs.com/package/ws)
 	- [x] [localStorage](https://www.npmjs.com/package/node-localstorage) (Persists to `./.webrun/localstorage`)
 	- [ ] [indexDB](https://www.npmjs.com/package/fake-indexeddb) (Doesn't persist, removed)
-	- [ ] crypto.randomBytes() using node's crypto module.
+	- [x] crypto.randomBytes() using node's crypto module.
 	- [ ] [SubtleCrypto](https://github.com/PeculiarVentures/node-webcrypto-p11) (or with [this](https://github.com/PeculiarVentures/node-webcrypto-ossl))
 	- [x] [TextEncoder / TextDecoder](https://github.com/modulesio/text-encoder)
 	- [ ] WebRTC
