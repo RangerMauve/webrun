@@ -77,3 +77,9 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [ ] Experimental Beaker APIs (does it make sense?)
 		- [ ] DatPeers [Issue](https://github.com/beakerbrowser/dat-node/issues/3)
 		- [ ] Library
+- [ ] IPFS support
+	- [ ] Load from IPFS / IPNS URLs
+	- [ ] ipfs global
+- [ ] STDIO support
+	- [ ] `self.postMessage` / `self.onmessage`?
+	- [ ] `console.something`?
