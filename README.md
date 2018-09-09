@@ -3,7 +3,7 @@ A custom module loader and global shim for Node to make it compatible with the b
 
 The goal is to make code that works in browsers first, but can also run anywhere that Node runs.
 
-You cannot import node builtins as that would break compatibility. If you're missing a feature, please open PR with a polyfill that implements a Web API that fulfills your need.
+You can use `import.meta.require` to load node modules, but please consider opening an issue for adding a Web API that performs the same function if one exists.
 
 **Warning:** This is still in development. Use at your own risk!
 
@@ -51,6 +51,8 @@ Some browser APIs have been added to the global scope so hopefully a lot of modu
 
 In addition to loading content from `https://` URLs, this loader also supports `dat://` URLs. This way you can download code right from the peer to peer web!
 
+You can still load Node modules by using `import.meta.require`, but this should only be done for APIs that you absolutely can't get on the web because otherwise your code won't be portable.
+
 PRs for additional protocols are welcome! All you need is an async function that takes a URL, and returns the file content string.
 
 ## Progress:
@@ -71,15 +73,19 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [x] [TextEncoder / TextDecoder](https://github.com/modulesio/text-encoder)
 	- [ ] WebRTC
 	- [ ] Cache Storage
+	- [ ] [self.navigator](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/navigator)
+	- [ ] [self.location](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/location)
+	- [x] [WindowEventHandlers](https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers)
+	- [x] [self.close()](https://developer.mozilla.org/en-US/docs/Web/API/Window/close)
+	- [x] self.postMessage / self.onmessage
+	- [x] [EventTarget](https://github.com/WebReflection/event-target)
+	- [ ] [libdweb APIs](https://github.com/mozilla/libdweb)
 - [x] Dat protocol support
 	- [x] Load from Dat URLs
 	- [x] DatArchive global
 	- [ ] Experimental Beaker APIs (does it make sense?)
 		- [ ] DatPeers [Issue](https://github.com/beakerbrowser/dat-node/issues/3)
 		- [ ] Library
-- [ ] IPFS support
+- [ ] IPFS
 	- [ ] Load from IPFS / IPNS URLs
 	- [ ] ipfs global
-- [ ] STDIO support
-	- [ ] `self.postMessage` / `self.onmessage`?
-	- [ ] `console.something`?

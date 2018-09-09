@@ -3,21 +3,9 @@ const fs = require("fs-extra");
 const mkdirp = require("mkdirp").sync;
 const filenamifyUrl = require('filenamify-url');
 
-const makeDatArchive = require("./polyfills/makeDatArchive");
-const makeCrypto = require("./polyfills/makeCrypto");
 const { createNode } = require('@beaker/dat-node')
 
 const fetch = require("node-fetch");
-const { URLSearchParams } = require("url");
-const FormData  = require("form-data");
-const Websocket = require("ws");
-
-const { bota, atob } = require("abab");
-const { TextEncoder, TextDecoder} = require("text-encoder");
-
-// const indexedDB = require("fake-indexeddb");
-// const IDBKeyRange = require("fake-indexeddb/lib/FDBKeyRange");
-const { LocalStorage } = require("node-localstorage");
 
 const IS_WINDOWS = /^win/.test(process.platform);
 
@@ -33,53 +21,13 @@ ensureExists(LOCALSTORAGECACHE);
 ensureExists(DATCACHE);
 ensureExists(WEBCACHE);
 
-const localStorage = new LocalStorage(cleanURL(LOCALSTORAGECACHE));
 const dat = createNode({
 	path: cleanURL(DATCACHE)
 });
-const DatArchive = makeDatArchive(dat);
-const crypto = makeCrypto();
 
 const moduleCache = {}
 
-const context = vm.createContext({
-	// Some expected builtins
-	console,
-	setTimeout,
-	clearTimeout,
-	setInterval,
-	clearInterval,
-
-	// Text manipluation
-	bota,
-	atob,
-	TextEncoder,
-	TextDecoder,
-
-	// Encryption
-	crypto,
-
-	// Networking
-	fetch,
-	FormData,
-	URLSearchParams,
-	Websocket,
-
-	// Storage / Caching
-	localStorage,
-
-	// p2p
-	DatArchive,
-
-	// Set up all the possible global variable names
-	get window() { return this; },
-	get self() { return this; },
-	get global() { return this; },
-
-	// TODO: STDIN/STDOUT using postMessage and onmessage
-}, {
-	name: "WebRun"
-});
+const context = require("./polyfills")(dat, cleanURL(LOCALSTORAGECACHE));
 
 const vmOptions = {
 	context: context,
@@ -129,6 +77,7 @@ async function linker(specifier, referencingModule) {
 
 function initalizeImportMeta(meta, module) {
 	meta.url = new URL(module.url);
+	meta.require = require;
 }
 
 async function getModuleContents(url) {

@@ -1,6 +1,6 @@
 {
   "name": "@rangermauve/webrun",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A custom module loader and global shim for Node to make it compatible with the browser.",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
   "dependencies": {
     "@beaker/dat-node": "github:beakerbrowser/dat-node",
     "abab": "^2.0.0",
+    "event-target": "^1.2.3",
     "fake-indexeddb": "^2.0.4",
     "filenamify-url": "^1.0.0",
     "form-data": "^2.3.2",
