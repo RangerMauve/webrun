@@ -31,7 +31,7 @@ const context = require("./polyfills")(dat, cleanURL(LOCALSTORAGECACHE));
 
 const vmOptions = {
 	context: context,
-	initalizeImportMeta: initalizeImportMeta
+	initializeImportMeta: initializeImportMeta
 }
 
 module.exports = async function main(args) {
@@ -56,7 +56,7 @@ async function loadModule(url) {
 
 	const options = Object.assign({
 		url: url.toString()
-	}, vmOptions)
+	}, vmOptions);
 
 	const module = new vm.SourceTextModule(
 		contents,
@@ -75,9 +75,8 @@ async function linker(specifier, referencingModule) {
 	return loadModule(url);
 }
 
-function initalizeImportMeta(meta, module) {
-	meta.url = new URL(module.url);
-	meta.require = require;
+function initializeImportMeta(meta, module) {
+	meta.url = module.url.toString();
 }
 
 async function getModuleContents(url) {
@@ -118,7 +117,9 @@ async function getHTTPS(url) {
 }
 
 async function getDat(url) {
-	const archive = await DatArchive.load(`dat://${url.hostname}`);
+	const parentURL = `dat://${url.hostname}`;
+	const resovledURL = await dat.dns.resolve(parentURL);
+	const archive = await dat.getArchive(resovledURL);
 
 	return await archive.readFile(url.pathname, 'utf8');
 }

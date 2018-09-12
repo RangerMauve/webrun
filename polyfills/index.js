@@ -30,6 +30,7 @@ module.exports = function (dat, LOCALSTORAGECACHE) {
 		setInterval,
 		clearInterval,
 		EventTarget,
+		URL,
 
 		// Text manipluation
 		bota,
@@ -56,6 +57,10 @@ module.exports = function (dat, LOCALSTORAGECACHE) {
 
 		// p2p
 		DatArchive,
+
+		// Node support
+		// TODO: Make this relative to process.cwd()
+		require,
 	});
 
 	["window", "global", "self"].forEach((name) => {

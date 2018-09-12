@@ -3,7 +3,7 @@ A custom module loader and global shim for Node to make it compatible with the b
 
 The goal is to make code that works in browsers first, but can also run anywhere that Node runs.
 
-You can use `import.meta.require` to load node modules, but please consider opening an issue for adding a Web API that performs the same function if one exists.
+You can use `require` to load node modules, but please consider opening an issue for adding a Web API that performs the same function if one exists. This is bound to be buggy
 
 **Warning:** This is still in development. Use at your own risk!
 
@@ -51,7 +51,7 @@ Some browser APIs have been added to the global scope so hopefully a lot of modu
 
 In addition to loading content from `https://` URLs, this loader also supports `dat://` URLs. This way you can download code right from the peer to peer web!
 
-You can still load Node modules by using `import.meta.require`, but this should only be done for APIs that you absolutely can't get on the web because otherwise your code won't be portable.
+You can still load Node modules by using `require`, but this should only be done for APIs that you absolutely can't get on the web because otherwise your code won't be portable.
 
 PRs for additional protocols are welcome! All you need is an async function that takes a URL, and returns the file content string.
 
