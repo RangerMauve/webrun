@@ -15,6 +15,12 @@ const EventTarget = require('event-target').default;
 const makeDatArchive = require("./makeDatArchive");
 const makeCrypto = require("./makeCrypto");
 
+var _require = require;
+
+const baseURL = new URL('file://');
+baseURL.pathname = `${process.cwd()}/`;
+const IS_WINDOWS = /^win/.test(process.platform);
+
 module.exports = function (dat, LOCALSTORAGECACHE) {
 	const localStorage = new LocalStorage(LOCALSTORAGECACHE);
 	const crypto = makeCrypto();
@@ -80,7 +86,13 @@ module.exports = function (dat, LOCALSTORAGECACHE) {
 		if (typeof contextVars.onmessage === "function") {
 			contextVars.onmessage(event);
 		}
-	})
+	});
+
+	const context = vm.createContext(contextVars, {
+		name: "WebRun"
+	});
+
+	return context;
 
 	function postMesage(message) {
 		process.stdout.write(message);
@@ -90,9 +102,18 @@ module.exports = function (dat, LOCALSTORAGECACHE) {
 		process.exit(statusCode || 0);
 	}
 
-	const context = vm.createContext(contextVars, {
-		name: "WebRun"
-	});
+	function require(path) {
+		if(/^[\.\\\/]/.test(path)) {
+			const finalPath = cleanURL(new URL(path, baseURL));
+			return _require(finalPath);
+		} else {
+			return _require(path);
+		}
+	}
+}
 
-	return context;
+function cleanURL(url) {
+	let location = url.pathname;
+	if (IS_WINDOWS) location = location.slice(1);
+	return location;
 }
