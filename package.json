@@ -4,7 +4,8 @@
   "description": "A custom module loader and global shim for Node to make it compatible with the browser.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "coverage": "node --experimental-vm-modules ./node_modules/.bin/istanbul cover tape test.js",
+    "test": "node --experimental-vm-modules test.js"
   },
   "bin": "bin/argproxy.js",
   "repository": {
@@ -24,7 +25,10 @@
   },
   "homepage": "https://github.com/RangerMauve/node-web-loader#readme",
   "devDependencies": {
-    "node": "^10.8.0"
+    "collect-console": "^1.0.1",
+    "istanbul": "^1.1.0-alpha.1",
+    "node": "^10.8.0",
+    "tape": "^4.9.1"
   },
   "dependencies": {
     "@beaker/dat-node": "github:beakerbrowser/dat-node",
