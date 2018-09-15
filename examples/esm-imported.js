@@ -1,3 +1,3 @@
-export default function example() {
-	console.log("Relative imports work!");
+export default function example () {
+  console.log('Relative imports work!')
 }
