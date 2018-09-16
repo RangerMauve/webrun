@@ -1,4 +1,5 @@
-import example from 'dat://rangermauve.hashbase.io/esm.js';
+/* globals self */
+import example from 'dat://rangermauve.hashbase.io/esm.js'
 
 example()
 

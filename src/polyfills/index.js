@@ -110,7 +110,7 @@ module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
   }
 
   function require (path) {
-    if (/^[\.\\\/]/.test(path)) {
+    if (/^[.\\/]/.test(path)) {
       const finalPath = cleanURL(new URL(path, baseURL))
       return _require(finalPath)
     } else {
