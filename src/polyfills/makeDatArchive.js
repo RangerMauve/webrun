@@ -37,11 +37,6 @@ module.exports = function (dat) {
       return this._archive.revert()
     }
 
-    async history (opts = {}) {
-      await this._loadPromise
-      return this._archive.history(opts)
-    }
-
     async stat (filepath, opts = {}) {
       await this._loadPromise
       return this._archive.stat(filepath, opts)
@@ -92,6 +87,11 @@ module.exports = function (dat) {
       return this._archive.rename(filepath, dstpath, opts)
     }
 
+    history (opts) {
+      if (this._loadPromise) throw new TypeError(NOT_LOADED_ERROR)
+      return this._archive.history(opts)
+    }
+
     checkout (opts) {
       if (this._loadPromise) throw new TypeError(NOT_LOADED_ERROR)
       return this._archive.checkout(opts)
@@ -100,10 +100,6 @@ module.exports = function (dat) {
     watch (pattern, onInvalidated) {
       if (this._loadPromise) throw new TypeError(NOT_LOADED_ERROR)
       return this._archive.watch(pattern, onInvalidated)
-    }
-
-    static async resolveName (url) {
-      return dat.dns.resolve(url)
     }
 
     static async load (url) {
@@ -124,6 +120,10 @@ module.exports = function (dat) {
 
     static async selectArchive (options) {
       throw new TypeError('selectArchive is not supported in WebRun since there is no UI')
+    }
+
+    static async resolveName (url) {
+      return dat.dns.resolve(url)
     }
 
     static async unlink (url) {

@@ -32,6 +32,22 @@ example();
 p2pexample();
 ```
 
+You can start a REPL using:
+
+```
+webrun
+```
+
+Then you can load modules using the new [dynamic import](https://github.com/tc39/proposal-dynamic-import) syntax.
+
+This will return a promise that contains all the exported properties.
+
+If you want to load the default export you can use something like the following:
+
+```javascript
+let {default: example} = await import("https://rangermauve.hashbase.io/esm.js")
+```
+
 ## Help it's not working!
 
 - Delete the `.webrun` folder in the current directory. This will clear the cache

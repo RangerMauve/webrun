@@ -1,7 +1,5 @@
-import example from "./example.js";
+import example from './example.js'
 
-console.log(import.meta);
+example()
 
-example();
-
-self.close();
+self.close()
