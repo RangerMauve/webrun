@@ -38,7 +38,15 @@ You can start a REPL using:
 webrun
 ```
 
-Please note that because of a [pending Node.js bug](https://github.com/nodejs/node/pull/22381) the REPL can't use `import` yet.
+Then you can load modules using the new [dynamic import](https://github.com/tc39/proposal-dynamic-import) syntax.
+
+This will return a promise that contains all the exported properties.
+
+If you want to load the default export you can use something like the following:
+
+```javascript
+let {default: example} = await import("https://rangermauve.hashbase.io/esm.js")
+```
 
 ## Help it's not working!
 
