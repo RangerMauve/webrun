@@ -32,6 +32,14 @@ example();
 p2pexample();
 ```
 
+You can start a REPL using:
+
+```
+webrun
+```
+
+Please note that because of a [pending Node.js bug](https://github.com/nodejs/node/pull/22381) the REPL can't use `import` yet.
+
 ## Help it's not working!
 
 - Delete the `.webrun` folder in the current directory. This will clear the cache

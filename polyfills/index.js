@@ -14,6 +14,7 @@ const EventTarget = require('event-target').default;
 
 const makeDatArchive = require("./makeDatArchive");
 const makeCrypto = require("./makeCrypto");
+const makeImport = require("./import");
 
 var _require = require;
 
@@ -21,10 +22,14 @@ const baseURL = new URL('file://');
 baseURL.pathname = `${process.cwd()}/`;
 const IS_WINDOWS = /^win/.test(process.platform);
 
-module.exports = function (dat, LOCALSTORAGECACHE) {
+module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
 	const localStorage = new LocalStorage(LOCALSTORAGECACHE);
 	const crypto = makeCrypto();
 	const DatArchive = makeDatArchive(dat);
+	const relativeImport = makeImport(loadModule);
+	const _import = (path) => {
+		return relativeImport(path, baseURL);
+	};
 
 	const contextVars = new EventTarget();
 
@@ -65,8 +70,10 @@ module.exports = function (dat, LOCALSTORAGECACHE) {
 		DatArchive,
 
 		// Node support
-		// TODO: Make this relative to process.cwd()
 		require,
+
+		// Add import
+		_import,
 	});
 
 	["window", "global", "self"].forEach((name) => {

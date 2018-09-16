@@ -27,14 +27,22 @@ const dat = createNode({
 
 const moduleCache = {}
 
-const context = require("./polyfills")(dat, cleanURL(LOCALSTORAGECACHE));
+const context = require("./polyfills")(dat, loadModule, cleanURL(LOCALSTORAGECACHE));
 
 const vmOptions = {
 	context: context,
 	initializeImportMeta: initializeImportMeta
 }
 
-module.exports = async function main(args) {
+const _import = require("./polyfills/import")(loadModule);
+
+module.exports = main
+module.exports.context = context;
+
+module.exports.loadModule = loadModule;
+module.exports.loadContent = loadContent;
+
+async function main(args) {
 	const rawUrl = args.url;
 	const url = new URL(rawUrl, baseURL)
 	const module = await loadModule(url);
@@ -54,12 +62,18 @@ async function loadModule(url) {
 
 	const contents = await getModuleContents(url);
 
+	return loadContent(contents, url);
+}
+
+async function loadContent(contents, url) {
+	const cleaned = injectImport(contents);
+
 	const options = Object.assign({
 		url: url.toString()
 	}, vmOptions);
 
 	const module = new vm.SourceTextModule(
-		contents,
+		cleaned,
 		options
 	);
 
@@ -77,6 +91,11 @@ async function linker(specifier, referencingModule) {
 
 function initializeImportMeta(meta, module) {
 	meta.url = module.url.toString();
+	meta._import = (path) => _import(path, module.url);
+}
+
+function injectImport(content) {
+	return content.replace(/([ \t]+)import\(/g, " import.meta._import(");
 }
 
 async function getModuleContents(url) {
