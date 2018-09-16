@@ -10,8 +10,6 @@ module.exports = function makeImport (loadModule) {
       await module.evaluate()
     }
 
-    console.log(module.namespace)
-
     return module.namespace
   }
 }
