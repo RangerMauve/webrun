@@ -1,5 +1,5 @@
-import example from "dat://rangermauve.hashbase.io/esm.js";
+import example from 'dat://rangermauve.hashbase.io/esm.js';
 
-example();
+example()
 
-self.close();
+self.close()

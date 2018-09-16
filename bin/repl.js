@@ -1,24 +1,23 @@
-var repl = require("repl");
-var vm = require("vm");
+var repl = require('repl')
 
-var Webrun = require("../");
+var Webrun = require('../src')
 
-var context = Webrun.context;
+var context = Webrun.context
 
-var server = repl.start({});
+var server = repl.start({})
 
-var _eval = server.eval;
+var _eval = server.eval
 
-server.eval = evalCode;
+server.eval = evalCode
 
-server.context = context;
+server.context = context
 
-function evalCode(cmd, _context, filename, callback) {
-	const processed = injectImport(cmd);
+function evalCode (cmd, _context, filename, callback) {
+  const processed = injectImport(cmd)
 
-	_eval(processed, _context, filename, callback);
+  _eval(processed, _context, filename, callback)
 }
 
-function injectImport(content) {
-	return content.replace(/([ \t]+)import\(/g, " _import(");
+function injectImport (content) {
+  return content.replace(/([ \t]+)import\(/g, ' _import(')
 }

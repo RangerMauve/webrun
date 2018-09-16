@@ -1,6 +1,6 @@
-import imported from "./esm-imported.js";
+import imported from './esm-imported.js'
 
-export default function example() {
-	console.log("Importing works!");
-	imported();
+export default function example () {
+  console.log('Importing works!')
+  imported()
 }

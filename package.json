@@ -26,6 +26,12 @@
   "homepage": "https://github.com/RangerMauve/node-web-loader#readme",
   "devDependencies": {
     "collect-console": "^1.0.1",
+    "eslint": "^5.6.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
     "istanbul": "^1.1.0-alpha.1",
     "node": "^10.8.0",
     "tape": "^4.9.1"
