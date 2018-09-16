@@ -2,10 +2,8 @@
 const argv = require('yargs').argv
 
 // The last argument is the URL
-const url = argv._.slice(-1)[0];
+const url = argv._.slice(-1)[0]
 
-var webrun = require("../");
+const webrun = require('../src/')
 
-webrun({
-	url: url
-});
+webrun({ url })

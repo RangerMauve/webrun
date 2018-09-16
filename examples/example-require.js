@@ -1,7 +1,7 @@
 // Require modules by name
-console.log(require("os").type());
+console.log(require('os').type())
 
 // Require relative to the working directory
-console.log(require("./package.json").name);
+console.log(require('./package.json').name)
 
-self.close();
+self.close()
