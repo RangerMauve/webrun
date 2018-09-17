@@ -1,11 +1,7 @@
 const vm = require('vm')
-const fs = require('fs-extra')
 const mkdirp = require('mkdirp').sync
-const filenamifyUrl = require('filenamify-url')
 
 const { createNode } = require('@beaker/dat-node')
-
-const fetch = require('node-fetch')
 
 const IS_WINDOWS = /^win/.test(process.platform)
 
@@ -21,9 +17,10 @@ ensureExists(LOCALSTORAGECACHE)
 ensureExists(DATCACHE)
 ensureExists(WEBCACHE)
 
-const dat = createNode({
-  path: cleanURL(DATCACHE)
-})
+const dat = createNode({ path: cleanURL(DATCACHE) })
+const loadDat = require('./loaders/dat')({ dat })
+const loadHttps = require('./loaders/https')({ cacheDir: WEBCACHE })
+const loadFile = require('./loaders/file')()
 
 const moduleCache = {}
 
@@ -100,46 +97,14 @@ function injectImport (content) {
 
 async function getModuleContents (url) {
   if (url.protocol === 'file:') {
-    return getFile(url)
+    return loadFile(url)
   } else if (url.protocol === 'https:') {
-    return getHTTPS(url)
+    return loadHttps(url)
   } else if (url.protocol === 'dat:') {
-    return getDat(url)
+    return loadDat(url)
   } else {
     throw new Error(`Unable to load module. Unsupported protocol: ${url}`)
   }
-}
-
-async function getFile (url) {
-  const location = cleanURL(url)
-  return fs.readFile(location, 'utf8')
-}
-
-async function getHTTPS (url) {
-  const cachedName = filenamifyUrl(url.href)
-  const cachedLocation = cleanURL(new URL(cachedName, WEBCACHE))
-
-  try {
-    await fs.stat(cachedLocation)
-
-    return fs.readFile(cachedLocation, 'utf8')
-  } catch (e) {
-    const response = await fetch(url)
-
-    const content = await response.text()
-
-    await fs.writeFile(cachedLocation, content, 'utf8')
-
-    return content
-  }
-}
-
-async function getDat (url) {
-  const parentURL = `dat://${url.hostname}`
-  const resovledURL = await dat.dns.resolve(parentURL)
-  const archive = await dat.getArchive(resovledURL)
-
-  return archive.readFile(url.pathname, 'utf8')
 }
 
 function ensureExists (url) {
