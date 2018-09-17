@@ -105,3 +105,7 @@ PRs for additional protocols are welcome! All you need is an async function that
 - [ ] IPFS
 	- [ ] Load from IPFS / IPNS URLs
 	- [ ] ipfs global
+- [ ] Fetch
+	- [ ] Create fetch which registers loaders for protocols
+	- [ ] Refactor module loading to use fetch
+- [ ] CLI arguments: Add them to searchParams for the URL being loaded
