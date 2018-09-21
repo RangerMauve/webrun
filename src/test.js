@@ -25,6 +25,17 @@ test('webrun - supports running a file', t => {
   }, t.end)
 })
 
+test('webrun - supports sessionStorage', async t => {
+  const url = new URL('file://' + path.resolve(__dirname, 'fixtures/sessionStorage.js'))
+  const url2 = new URL('file://' + path.resolve(__dirname, 'fixtures/sessionStorage2.js'))
+
+  const reset = collect.log()
+  await webrun({ url })
+  await webrun({ url: url2 })
+  t.deepEqual(reset(), ['1', '2'])
+  t.end()
+})
+
 test.onFinish(() => {
   process.exit(0)
 })

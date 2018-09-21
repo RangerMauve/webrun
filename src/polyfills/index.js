@@ -15,6 +15,7 @@ const EventTarget = require('event-target').default
 const makeDatArchive = require('./makeDatArchive')
 const makeCrypto = require('./makeCrypto')
 const makeImport = require('./import')
+const prepareDir = require('../lib/prepare-dir')
 
 var _require = require
 
@@ -24,6 +25,12 @@ const IS_WINDOWS = /^win/.test(process.platform)
 
 module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
   const localStorage = new LocalStorage(LOCALSTORAGECACHE)
+
+  const sessionId = process.ppid
+  const SESSIONSTORAGEPATH = new URL(`file:///tmp/.webrun/session-${sessionId}`)
+  prepareDir(SESSIONSTORAGEPATH)
+  const sessionStorage = new LocalStorage(SESSIONSTORAGEPATH.pathname)
+
   const crypto = makeCrypto()
   const DatArchive = makeDatArchive(dat)
   const relativeImport = makeImport(loadModule)
@@ -60,6 +67,7 @@ module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
 
     // Storage / Caching
     localStorage,
+    sessionStorage,
 
     // STDOUT / Process stuff
     postMesage,
