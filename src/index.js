@@ -17,14 +17,14 @@ ensureExists(LOCALSTORAGECACHE)
 ensureExists(DATCACHE)
 ensureExists(WEBCACHE)
 
-const dat = createNode({ path: cleanURL(DATCACHE) })
+const dat = createNode({ path: urlToPath(DATCACHE) })
 const loadDat = require('./loaders/dat')({ dat })
 const loadHttps = require('./loaders/https')({ cacheDir: WEBCACHE })
 const loadFile = require('./loaders/file')()
 
 const moduleCache = {}
 
-const context = require('./polyfills')(dat, loadModule, cleanURL(LOCALSTORAGECACHE))
+const context = require('./polyfills')(dat, loadModule, urlToPath(LOCALSTORAGECACHE))
 
 const vmOptions = {
   context: context,
@@ -108,11 +108,11 @@ async function getModuleContents (url) {
 }
 
 function ensureExists (url) {
-  const location = cleanURL(url)
+  const location = urlToPath(url)
   mkdirp(location)
 }
 
-function cleanURL (url) {
+function urlToPath (url) {
   let location = url.pathname
   if (IS_WINDOWS) location = location.slice(1)
   return location

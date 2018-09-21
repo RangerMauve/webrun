@@ -1,10 +1,10 @@
 const mkdirp = require('mkdirp').sync
-const cleanURL = require('./clean-url')
+const urlToPath = require('./url-to-path')
 
 const baseURL = new URL('file://')
 baseURL.pathname = `${process.cwd()}/`
 
 module.exports = function ensureExists (url) {
-  const location = cleanURL(url)
+  const location = urlToPath(url)
   mkdirp(location)
 }

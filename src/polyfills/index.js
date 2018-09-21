@@ -14,6 +14,8 @@ const { LocalStorage } = require('node-localstorage')
 
 const EventTarget = require('event-target').default
 
+const urlToPath = require('../lib/url-to-path')
+
 const makeDatArchive = require('./makeDatArchive')
 const makeCrypto = require('./makeCrypto')
 const makeImport = require('./import')
@@ -23,7 +25,6 @@ var _require = require
 
 const baseURL = new URL('file://')
 baseURL.pathname = `${process.cwd()}/`
-const IS_WINDOWS = /^win/.test(process.platform)
 
 module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
   const localStorage = new LocalStorage(LOCALSTORAGECACHE)
@@ -31,7 +32,7 @@ module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
   const sessionId = process.ppid
   const SESSIONSTORAGEPATH = new URL(`file://${os.tmpdir()}${sep}.webrun${sep}/session-${sessionId}`)
   prepareDir(SESSIONSTORAGEPATH)
-  const sessionStorage = new LocalStorage(SESSIONSTORAGEPATH.pathname)
+  const sessionStorage = new LocalStorage(urlToPath(SESSIONSTORAGEPATH))
 
   const crypto = makeCrypto()
   const DatArchive = makeDatArchive(dat)
@@ -121,16 +122,10 @@ module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
 
   function require (path) {
     if (/^[.\\/]/.test(path)) {
-      const finalPath = cleanURL(new URL(path, baseURL))
+      const finalPath = urlToPath(new URL(path, baseURL))
       return _require(finalPath)
     } else {
       return _require(path)
     }
   }
-}
-
-function cleanURL (url) {
-  let location = url.pathname
-  if (IS_WINDOWS) location = location.slice(1)
-  return location
 }
