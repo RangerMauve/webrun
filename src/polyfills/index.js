@@ -1,5 +1,7 @@
 const vm = require('vm')
 const { URLSearchParams } = require('url')
+const os = require('os')
+const sep = require('path').sep
 
 const fetch = require('node-fetch')
 const FormData = require('form-data')
@@ -27,7 +29,7 @@ module.exports = function (dat, loadModule, LOCALSTORAGECACHE) {
   const localStorage = new LocalStorage(LOCALSTORAGECACHE)
 
   const sessionId = process.ppid
-  const SESSIONSTORAGEPATH = new URL(`file:///tmp/.webrun/session-${sessionId}`)
+  const SESSIONSTORAGEPATH = new URL(`file://${os.tmpdir()}${sep}.webrun${sep}/session-${sessionId}`)
   prepareDir(SESSIONSTORAGEPATH)
   const sessionStorage = new LocalStorage(SESSIONSTORAGEPATH.pathname)
 
