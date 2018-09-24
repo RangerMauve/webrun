@@ -4,12 +4,12 @@ const argv = require('yargs').argv
 // The last argument is the URL
 const url = argv._.slice(-1)[0]
 
-var Webrun = require('../')
+var webrun = require('../')
 
 if (url) {
-  Webrun({
+  webrun({
     url: url
-  })
+  }).then(result => process.exit(result.code), result => process.exit(result.code))
 } else {
   require('./repl.js')
 }
