@@ -97,6 +97,7 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [x] [EventTarget](https://github.com/WebReflection/event-target)
 	- [ ] [libdweb APIs](https://github.com/mozilla/libdweb)
 	- [ ] [Web Bluetooth](https://github.com/thegecko/webbluetooth)
+	- [ ] [Keypress and Mousemove events](https://github.com/TooTallNate/keypress)
 - [x] Dat protocol support
 	- [x] Load from Dat URLs
 	- [x] DatArchive global
