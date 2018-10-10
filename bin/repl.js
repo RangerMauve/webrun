@@ -2,21 +2,33 @@ var repl = require('repl')
 
 var Webrun = require('../src')
 
-var context = Webrun.context
+const webrun = new Webrun({
+  allowRequire: true
+})
 
-var server = repl.start({})
+webrun.run().then(() => {
+  var context = webrun.context
 
-var _eval = server.eval
+  var server = repl.start({
+    useGlobal: false,
+    useColors: true,
+    ignoreUndefined: true,
+    terminal: true,
+    breakEvalOnSigint: true
+  })
 
-server.eval = evalCode
+  var _eval = server.eval
 
-server.context = context
+  server.eval = evalCode
 
-function evalCode (cmd, _context, filename, callback) {
-  const processed = injectImport(cmd)
+  server.context = context
 
-  _eval(processed, _context, filename, callback)
-}
+  function evalCode (cmd, _context, filename, callback) {
+    const processed = injectImport(cmd)
+
+    return _eval.call(server, processed, _context, filename, callback)
+  }
+})
 
 function injectImport (content) {
   return content.replace(/([ \t]+)import\(/g, ' _import(')

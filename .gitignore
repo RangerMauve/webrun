@@ -65,3 +65,6 @@ typings/
 
 # Where stuff gets persisted
 .webrun
+
+# No thank you
+package-lock.json

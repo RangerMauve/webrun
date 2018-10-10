@@ -1,6 +1,50 @@
+const urlToPath = require('../lib/url-to-path')
+
+const { createNode } = require('@beaker/dat-node')
+
 const NOT_LOADED_ERROR = 'Please use DatArchive.load() to load archives. https://github.com/beakerbrowser/dat-node/issues/4'
 
-module.exports = function (dat) {
+function DatPlugin (webrun) {
+  const { DATCACHE } = webrun.options
+
+  let dat = null
+  let DatArchive = null
+
+  webrun.addProtocol('dat:', async function getDat (url) {
+    const DatArchive = getDatArchive()
+    const parentURL = `dat://${url.hostname}`
+
+    const archive = await DatArchive.load(parentURL)
+
+    return archive.readFile(url.pathname, 'utf8')
+  })
+
+  webrun.addGlobals((contextVars) => {
+    Object.defineProperty(contextVars, 'DatArchive', {
+      get: getDatArchive
+    })
+
+    return contextVars
+  })
+
+  function getDat () {
+    if (!dat) {
+      dat = createNode({ path: urlToPath(DATCACHE) })
+    }
+
+    return dat
+  }
+
+  function getDatArchive () {
+    if (!DatArchive) {
+      DatArchive = makeDatArchive(getDat())
+    }
+
+    return DatArchive
+  }
+}
+
+function makeDatArchive (dat) {
   class DatArchive {
     constructor (url) {
       this.url = url
@@ -119,7 +163,9 @@ module.exports = function (dat) {
     }
 
     static async selectArchive (options) {
-      throw new TypeError('selectArchive is not supported in WebRun since there is no UI')
+      console.warn('selectArchive is not supported in WebRun since there is no UI')
+
+      return DatArchive.create(options)
     }
 
     static async resolveName (url) {
@@ -135,3 +181,5 @@ module.exports = function (dat) {
 
   return DatArchive
 }
+
+module.exports = DatPlugin
