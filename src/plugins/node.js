@@ -50,6 +50,10 @@ function NodePlugin (webrun) {
     }
 
     function postMesage (message) {
+      let finalMessage = message
+      if (typeof message !== "string") {
+        finalMessage = JSON.stringify(message)
+      }
       process.stdout.write(message)
     }
 
