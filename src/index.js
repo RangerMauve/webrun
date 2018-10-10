@@ -1,5 +1,7 @@
 const vm = require('vm')
+const path = require('path')
 const mkdirp = require('mkdirp').sync
+const spawn = require('child-process-promise').spawn
 
 const { createNode } = require('@beaker/dat-node')
 
@@ -39,10 +41,48 @@ module.exports.context = context
 module.exports.loadModule = loadModule
 module.exports.loadContent = loadContent
 
-async function main (args) {
-  const rawUrl = args.url
-  const url = new URL(rawUrl, baseURL)
-  const module = await loadModule(url)
+if (require.main === module) {
+  const argv = require('yargs').argv
+  const url = argv._.slice(-1)[0]
+  run(url)
+}
+
+// spawns a sub process to run the url in
+async function main ({ url }) {
+  const nodeLocation = process.argv0
+  const loaderLocation = path.join(__dirname, 'index.js')
+
+  const args = [
+    '--experimental-repl-await',
+    '--experimental-vm-modules',
+
+    // Alternatively, the stderr/out can be filtered below to remove experimental warning
+    '--no-warnings',
+    loaderLocation,
+    url
+  ]
+  const spawned = spawn(nodeLocation, args, {
+    cwd: process.cwd(),
+    stdio: ['inherit', 'pipe', 'pipe']
+  })
+
+  // Doing this allows us to capture the stderr and stdout for testing purposes
+  const passStdout = data => process.stdout.write(data)
+  const passStderr = data => process.stderr.write(data)
+  spawned.childProcess.stdout.on('data', passStdout)
+  spawned.childProcess.stderr.on('data', passStderr)
+
+  spawned.then(() => {
+    spawned.childProcess.stdout.removeListener('data', passStdout)
+    spawned.childProcess.stderr.removeListener('data', passStderr)
+  })
+
+  return spawned
+}
+
+async function run (url) {
+  const resolvedURL = new URL(url, baseURL)
+  const module = await loadModule(resolvedURL)
 
   module.instantiate()
   await module.evaluate()
