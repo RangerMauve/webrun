@@ -10,8 +10,6 @@ const argv = require('yargs')
   .boolean('experimental-vm-modules')
   .argv
 
-console.log(argv)
-
 // The last argument is the URL
 const hasURL = argv._.slice(-1)[0]
 
