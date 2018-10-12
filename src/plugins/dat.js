@@ -17,13 +17,7 @@ function DatPlugin (webrun) {
     return archive.readFile(url.pathname, 'utf8')
   })
 
-  webrun.addGlobals((contextVars) => {
-    Object.defineProperty(contextVars, 'DatArchive', {
-      get: getDatArchive
-    })
-
-    return contextVars
-  })
+  webrun.addGlobal('DatArchive', getDatArchive)
 
   function getDat () {
     if (!dat) {

@@ -12,7 +12,9 @@ class Webrun {
     this.options = options
     this._modules = {}
     this._plugins = []
-    this._globalHandlers = []
+    this._contextModifiers = []
+    this._globals = {}
+    this._globalCache = {}
     this._protocols = {}
     this.context = null
 
@@ -20,6 +22,8 @@ class Webrun {
       const url = new URL(specifier, referencingModule.url)
       return this.loadModule(url)
     }
+
+    this.addGlobal('_import', () => this._import.bind(this))
   }
 
   async import (path, base = baseURL) {
@@ -78,20 +82,32 @@ class Webrun {
       await plugin(this)
     }
 
-    const _import = this.import.bind(this)
+    let contextVars = {}
 
-    let contextVars = {
-      get _import () {
-        return _import
+    for (let modifier of this._contextModifiers) {
+      contextVars = await modifier(contextVars, this)
+
+      if (!contextVars) {
+        throw new Error(`Handler didn't return new globals "${modifier}"`)
       }
     }
 
-    for (let addGlobals of this._globalHandlers) {
-      contextVars = await addGlobals(contextVars, this)
-
-      if (!contextVars) {
-        throw new Error(`Handler didn't return new globals "${addGlobals}"`)
+    // For each global, add a new getter, use memoization so the actual getter only needs to be invoked once it's needed
+    const globalNames = Object.keys(this._globals)
+    const globalCache = this._globalCache
+    for (let globalName of globalNames) {
+      const getter = this._globals[globalName]
+      // Don't use arrow functions to preserve the `this` context
+      const getMemoized = function () {
+        if (!globalCache[globalName]) {
+          globalCache[globalName] = getter.call(this)
+        }
+        return globalCache[globalName]
       }
+
+      Object.defineProperty(contextVars, globalName, {
+        get: getMemoized
+      })
     }
 
     const context = vm.createContext(contextVars, {
@@ -126,8 +142,18 @@ class Webrun {
     return this
   }
 
-  addGlobals (handler) {
-    this._globalHandlers.push(handler)
+  addContextModifier (handler) {
+    this._contextModifiers.push(handler)
+
+    return this
+  }
+
+  addGlobal (name, getter) {
+    if (this._globals[name]) {
+      throw new Error(`Global already registered: ${name}`)
+    }
+
+    this._globals[name] = getter
 
     return this
   }

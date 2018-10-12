@@ -1,17 +1,6 @@
-const vm = require('vm')
 const crypto = require('crypto')
-const { URLSearchParams } = require('url')
 const os = require('os')
 const sep = require('path').sep
-
-const fetch = require('node-fetch')
-const FormData = require('form-data')
-const Websocket = require('ws')
-
-const { bota, atob } = require('abab')
-const { TextEncoder, TextDecoder } = require('text-encoder')
-
-const { LocalStorage } = require('node-localstorage')
 
 const EventTarget = require('event-target').default
 
@@ -28,62 +17,69 @@ class Crypto {
 function BrowserPlugin (webrun) {
   const { LOCALSTORAGECACHE } = webrun.options
 
-  webrun.addGlobals((defaultVars) => {
+  function returnThis () {
+    return this
+  }
+
+  // Globals
+  webrun.addGlobal('global', returnThis)
+  webrun.addGlobal('self', returnThis)
+  webrun.addGlobal('window', returnThis)
+
+  // Some expected builtins
+  webrun.addGlobal('console', () => console)
+
+  webrun.addGlobal('setTimeout', () => setTimeout)
+  webrun.addGlobal('clearTimeout', () => clearTimeout)
+  webrun.addGlobal('setInterval', () => setInterval)
+  webrun.addGlobal('clearInterval', () => clearInterval)
+  webrun.addGlobal('EventTarget', () => EventTarget)
+  webrun.addGlobal('URL', () => URL)
+
+  // Text manipluation
+  webrun.addGlobal('bota', () => require('abab').btoa)
+  webrun.addGlobal('atob', () => require('abab').atob)
+  webrun.addGlobal('TextEncoder', () => require('text-encoder').TextEncoder)
+  webrun.addGlobal('TextDecoder', () => require('text-encoder').TextDecoder)
+
+  // Encryption
+  webrun.addGlobal('crypto', () => new Crypto())
+
+  // Networking
+  webrun.addGlobal('fetch', () => require('node-fetch'))
+  webrun.addGlobal('FormData', () => require('form-data'))
+  webrun.addGlobal('URLSearchParams', () => require('url').URLSearchParams)
+  webrun.addGlobal('Websocket', () => require('ws'))
+
+  // Storage / Caching
+  webrun.addGlobal('localStorage', () => {
+    prepareDir(LOCALSTORAGECACHE)
+
+    const { LocalStorage } = require('node-localstorage')
+
     const localStorage = new LocalStorage(urlToPath(LOCALSTORAGECACHE))
 
+    return localStorage
+  })
+
+  webrun.addGlobal('sessionStorage', () => {
     const sessionId = process.ppid
     const SESSIONSTORAGEPATH = new URL(`file://${os.tmpdir()}${sep}.webrun${sep}/session-${sessionId}`)
     prepareDir(SESSIONSTORAGEPATH)
+
+    const { LocalStorage } = require('node-localstorage')
+
     const sessionStorage = new LocalStorage(urlToPath(SESSIONSTORAGEPATH))
 
-    const crypto = new Crypto()
+    return sessionStorage
+  })
 
+  webrun.addContextModifier((defaultVars) => {
     const contextVars = new EventTarget()
 
-    Object.assign(contextVars, defaultVars, {
-      // Some expected builtins
-      console,
-      setTimeout,
-      clearTimeout,
-      setInterval,
-      clearInterval,
-      EventTarget,
-      URL,
+    Object.assign(contextVars, defaultVars)
 
-      // Text manipluation
-      bota,
-      atob,
-      TextEncoder,
-      TextDecoder,
-
-      // Encryption
-      crypto,
-
-      // Networking
-      fetch,
-      FormData,
-      URLSearchParams,
-      Websocket,
-
-      // Storage / Caching
-      localStorage,
-      sessionStorage
-
-    });
-
-    ['window', 'global', 'self'].forEach((name) => {
-      Object.defineProperty(contextVars, name, {
-        get: function () {
-          return this
-        }
-      })
-    })
-
-    const context = vm.createContext(contextVars, {
-      name: 'WebRun'
-    })
-
-    return context
+    return contextVars
   })
 }
 

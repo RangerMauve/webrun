@@ -10,7 +10,6 @@ const LOCALSTORAGECACHE = new URL('localstorage/', CACHE)
 const WEBCACHE = new URL('webcache/', CACHE)
 const DATCACHE = new URL('datcache/', CACHE)
 
-ensureExists(LOCALSTORAGECACHE)
 ensureExists(DATCACHE)
 ensureExists(WEBCACHE)
 

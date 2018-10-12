@@ -8,22 +8,16 @@ baseURL.pathname = `${process.cwd()}/`
 function NodePlugin (webrun) {
   const { allowRequire } = webrun.options
 
-  webrun.addGlobals((contextVars) => {
-    let onmessage = null
+  webrun.addGlobal('postMessage', () => postMessage)
+  webrun.addGlobal('close', () => close)
+  webrun.addGlobal('require', getRequire)
 
-    Object.assign(contextVars, {
-      // STDOUT / Process stuff
-      postMesage,
-      close
-    })
+  webrun.addContextModifier((contextVars) => {
+    let onmessage = null
 
     Object.defineProperty(contextVars, 'onmessage', {
       set: setOnmessage,
       get: () => onmessage
-    })
-
-    Object.defineProperty(contextVars, 'require', {
-      get: getRequire
     })
 
     return contextVars
@@ -48,36 +42,36 @@ function NodePlugin (webrun) {
         }
       })
     }
-
-    function postMesage (message) {
-      let finalMessage = message
-      if (typeof message !== 'string') {
-        finalMessage = JSON.stringify(message)
-      }
-      process.stdout.write(finalMessage)
-    }
-
-    function close (statusCode) {
-      process.exit(statusCode || 0)
-    }
-
-    function getRequire () {
-      if (allowRequire) {
-        return require
-      } else {
-        throw new Error('require() is disabled. Please add the --allow-require flag to enable it')
-      }
-    }
-
-    function require (path) {
-      if (/^[.\\/]/.test(path)) {
-        const finalPath = urlToPath(new URL(path, baseURL))
-        return _require(finalPath)
-      } else {
-        return _require(path)
-      }
-    }
   })
+
+  function postMessage (message) {
+    let finalMessage = message
+    if (typeof message !== 'string') {
+      finalMessage = JSON.stringify(message)
+    }
+    process.stdout.write(finalMessage)
+  }
+
+  function close (statusCode) {
+    process.exit(statusCode || 0)
+  }
+
+  function getRequire () {
+    if (allowRequire) {
+      return require
+    } else {
+      throw new Error('require() is disabled. Please add the --allow-require flag to enable it')
+    }
+  }
+
+  function require (path) {
+    if (/^[.\\/]/.test(path)) {
+      const finalPath = urlToPath(new URL(path, baseURL))
+      return _require(finalPath)
+    } else {
+      return _require(path)
+    }
+  }
 }
 
 module.exports = NodePlugin
