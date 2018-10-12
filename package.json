@@ -1,14 +1,14 @@
 {
   "name": "@rangermauve/webrun",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "A custom module loader and global shim for Node to make it compatible with the browser.",
   "main": "src/index.js",
   "scripts": {
     "coverage": "node --experimental-vm-modules ./node_modules/.bin/istanbul cover tape src/test.js",
     "lint": "standard --fix 'src/**/*.js' 'bin/**/*.js'",
-    "test": "node --experimental-vm-modules src/test.js"
+    "test": "node --experimental-vm-modules test/test.js"
   },
-  "bin": "bin/cli.js",
+  "bin": "bin/cli-runner.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RangerMauve/node-web-loader.git"
