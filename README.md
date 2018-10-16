@@ -114,8 +114,9 @@ Here's a list of the APIs that are supported, or are going to be supported event
 - [x] [self.close()](https://developer.mozilla.org/en-US/docs/Web/API/Window/close)
 - [x] self.postMessage / self.onmessage
 - [x] [EventTarget](https://github.com/WebReflection/event-target)
-- [ ] [Keypress and Mousemove events](https://github.com/TooTallNate/keypress)
+- [ ] [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)
 - [ ] WebRTC
+- [ ] [Keypress and Mousemove events](https://github.com/TooTallNate/keypress)
 - [ ] [SubtleCrypto](https://github.com/PeculiarVentures/node-webcrypto-p11) (or with [this](https://github.com/PeculiarVentures/node-webcrypto-ossl))
 - [ ] Cache Storage
 - [ ] [self.navigator](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/navigator)
