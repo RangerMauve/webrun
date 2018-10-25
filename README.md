@@ -125,6 +125,7 @@ Here's a list of the APIs that are supported, or are going to be supported event
 - [ ] [indexDB](https://www.npmjs.com/package/fake-indexeddb) (Doesn't persist, removed)
 - [ ] [libdweb APIs](https://github.com/mozilla/libdweb)
 - [ ] [Web Bluetooth](https://github.com/thegecko/webbluetooth)
+- [ ] [WebMIDI APi](https://github.com/jazz-soft/JZZ)
 
 ## API
 
