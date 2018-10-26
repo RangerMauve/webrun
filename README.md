@@ -114,6 +114,8 @@ Here's a list of the APIs that are supported, or are going to be supported event
 - [x] [self.close()](https://developer.mozilla.org/en-US/docs/Web/API/Window/close)
 - [x] self.postMessage / self.onmessage
 - [x] [EventTarget](https://github.com/WebReflection/event-target)
+	- [ ] [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
+	- [ ] [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent)
 - [x] [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
 - [ ] [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)
 - [ ] WebRTC
