@@ -22,7 +22,6 @@ function DatPlugin (webrun) {
 
   function getDat () {
     if (!dat) {
-
       ensureExists(DATCACHE)
 
       const { createNode } = require('@beaker/dat-node')
