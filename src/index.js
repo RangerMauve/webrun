@@ -1,6 +1,5 @@
 
 const Webrun = require('./Webrun')
-const ensureExists = require('./lib/prepare-dir')
 
 const baseURL = new URL('file://')
 baseURL.pathname = `${process.cwd()}/`
@@ -9,9 +8,6 @@ const CACHE = new URL('.webrun/', baseURL)
 const LOCALSTORAGECACHE = new URL('localstorage/', CACHE)
 const WEBCACHE = new URL('webcache/', CACHE)
 const DATCACHE = new URL('datcache/', CACHE)
-
-ensureExists(DATCACHE)
-ensureExists(WEBCACHE)
 
 const BrowserPlugin = require('./plugins/browser')
 const NodePlugin = require('./plugins/node')

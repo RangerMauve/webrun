@@ -2,6 +2,7 @@ const fs = require('fs-extra')
 const fetch = require('node-fetch')
 const filenamifyUrl = require('filenamify-url')
 const urlToPath = require('../lib/url-to-path')
+const ensureExists = require('../lib/prepare-dir')
 
 function HTTPSPLugin (webrun) {
   const { WEBCACHE } = webrun.options
@@ -18,6 +19,8 @@ function HTTPSPLugin (webrun) {
       const response = await fetch(url)
 
       const content = await response.text()
+
+      ensureExists(WEBCACHE)
 
       await fs.writeFile(cachedLocation, content, 'utf8')
 

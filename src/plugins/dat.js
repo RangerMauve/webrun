@@ -1,4 +1,5 @@
 const urlToPath = require('../lib/url-to-path')
+const ensureExists = require('../lib/prepare-dir')
 
 const NOT_LOADED_ERROR = 'Please use DatArchive.load() to load archives. https://github.com/beakerbrowser/dat-node/issues/4'
 
@@ -21,6 +22,9 @@ function DatPlugin (webrun) {
 
   function getDat () {
     if (!dat) {
+
+      ensureExists(DATCACHE)
+
       const { createNode } = require('@beaker/dat-node')
       dat = createNode({ path: urlToPath(DATCACHE) })
     }
