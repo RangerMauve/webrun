@@ -117,6 +117,7 @@ Here's a list of the APIs that are supported, or are going to be supported event
 	- [ ] [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
 	- [ ] [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent)
 - [x] [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
+- [ ] [WHATWG Streams](https://github.com/MattiasBuelens/web-streams-polyfill)
 - [ ] [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)
 - [ ] WebRTC
 - [ ] [Keypress and Mousemove events](https://github.com/TooTallNate/keypress)
