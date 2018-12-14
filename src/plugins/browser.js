@@ -49,7 +49,7 @@ function BrowserPlugin (webrun) {
   webrun.addGlobal('fetch', () => require('node-fetch'))
   webrun.addGlobal('FormData', () => require('form-data'))
   webrun.addGlobal('URLSearchParams', () => require('url').URLSearchParams)
-  webrun.addGlobal('Websocket', () => require('ws'))
+  webrun.addGlobal('WebSocket', () => require('ws'))
 
   // Storage / Caching
   webrun.addGlobal('localStorage', () => {
