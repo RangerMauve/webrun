@@ -13,7 +13,31 @@ function IPFSPlugin (webrun) {
 
     const path = url.pathname
 
-    const result = await ipfs.get(`/ipfs/${url.hostname}${path}`)
+    const hash = url.hostname
+
+    const finalURL = `/ipfs/${hash}${path}`
+
+    const result = await ipfs.get(finalURL)
+
+    const { content } = result[0]
+
+    const moduleContent = content.toString('utf8')
+
+    return moduleContent
+  })
+
+  webrun.addProtocol('ipns:', async function getIPNSFile (url) {
+    const ipfs = getIPFS()
+
+    const path = url.pathname
+
+    const hostname = url.hostname
+
+    const hash = await ipfs.name.resolve(`ipns/${hostname}`)
+
+    const finalURL = `${hash}${path}`
+
+    const result = await ipfs.get(finalURL)
 
     const { content } = result[0]
 

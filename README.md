@@ -160,7 +160,7 @@ Some browser APIs have been added to the global scope so hopefully a lot of modu
 
 In addition to loading content from `https://` URLs, this loader also supports `dat://` URLs. This way you can download code right from the peer to peer web!
 
-You can still load Node modules by using `require`, but this should only be done for APIs that you absolutely can't get on the web because otherwise your code won't be portable.
+You can still load Node modules by using `require`, but this should only be done for APIs that you absolutely can't get on the web because otherwise your code won't be portable to the web.
 
 PRs for additional protocols are welcome! All you need is an async function that takes a URL, and returns the file content string.
 
@@ -179,6 +179,6 @@ PRs for additional protocols are welcome! All you need is an async function that
 		- [ ] Library
 - [x] IPFS
 	- [x] Load from IPFS URLs
+	- [x] Load from IPNS URLs
 	- [x] ipfs global
-	- [ ] Load from IPNS URLs
 - [x] CLI arguments: Add them to searchParams for the URL being loaded
