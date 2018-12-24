@@ -51,6 +51,13 @@ function BrowserPlugin (webrun) {
   webrun.addGlobal('URLSearchParams', () => require('url').URLSearchParams)
   webrun.addGlobal('Websocket', () => require('ws'))
 
+  // Streams
+  webrun.addGlobal('ReadableStream', () => require('@mattiasbuelens/web-streams-polyfill/ponyfill').ReadableStream)
+  webrun.addGlobal('WritableStream', () => require('@mattiasbuelens/web-streams-polyfill/ponyfill').WritableStream)
+  webrun.addGlobal('ByteLengthQueuingStrategy', () => require('@mattiasbuelens/web-streams-polyfill/ponyfill').ByteLengthQueuingStrategy)
+  webrun.addGlobal('CountQueuingStrategy', () => require('@mattiasbuelens/web-streams-polyfill/ponyfill').CountQueuingStrategy)
+  webrun.addGlobal('TransformStream', () => require('@mattiasbuelens/web-streams-polyfill/ponyfill').TransformStream)
+
   // Storage / Caching
   webrun.addGlobal('localStorage', () => {
     prepareDir(LOCALSTORAGECACHE)
