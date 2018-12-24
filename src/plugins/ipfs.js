@@ -9,21 +9,13 @@ function IPFSPlugin (webrun) {
   let ipfs = null
 
   webrun.addProtocol('ipfs:', async function getIPFSFile (url) {
-    const ipfs = getIPFS()
-
     const path = url.pathname
 
     const hash = url.hostname
 
     const finalURL = `/ipfs/${hash}${path}`
 
-    const result = await ipfs.get(finalURL)
-
-    const { content } = result[0]
-
-    const moduleContent = content.toString('utf8')
-
-    return moduleContent
+    return getContent(finalURL)
   })
 
   webrun.addProtocol('ipns:', async function getIPNSFile (url) {
@@ -37,16 +29,22 @@ function IPFSPlugin (webrun) {
 
     const finalURL = `${hash}${path}`
 
-    const result = await ipfs.get(finalURL)
-
-    const { content } = result[0]
-
-    const moduleContent = content.toString('utf8')
-
-    return moduleContent
+    return getContent(finalURL)
   })
 
   webrun.addGlobal('ipfs', getIPFS)
+
+  async function getContent (url) {
+    const ipfs = getIPFS()
+
+    const result = await ipfs.get(url)
+
+    const { content } = result[0]
+
+    const textContent = content.toString('utf8')
+
+    return textContent
+  }
 
   function getIPFS () {
     if (ipfs) return ipfs
