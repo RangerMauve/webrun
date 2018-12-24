@@ -53,6 +53,8 @@ example()
 
 You can enable the `require` global by adding the `--allow-require` flag. This is disabled by default to encourage use of `import` and to limit what scripts can do. This behaves differently from the usual require in that it's a global and always requires relative to the current working directory.
 
+To avoid using `require` altogether, you can bundle up your CommonJS dependencies ahead of time with [Webrunify](https://github.com/brechtcs/webrunify).
+
 ## STDIO
 
 You can opt-into input from STDIN and output to STDOUT using `self.onmessage` and `self.postMessage`.
