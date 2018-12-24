@@ -6,7 +6,8 @@
   "scripts": {
     "coverage": "node --experimental-vm-modules ./node_modules/.bin/istanbul cover tape src/test.js",
     "lint": "standard --fix 'src/**/*.js' 'bin/**/*.js'",
-    "test": "node --experimental-vm-modules test/test.js"
+    "test": "node --experimental-vm-modules test/test.js",
+    "prepublish": "git config core.autocrlf false && git rm --cached -r . && git reset --hard"
   },
   "bin": "bin/cli-runner.js",
   "repository": {
