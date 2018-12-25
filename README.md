@@ -26,11 +26,18 @@ webrun ./example.js
 Then in your JS:
 
 ```javascript
+// Load code from an HTTPS server
 import example from "https://rangermauve.hashbase.io/esm.js";
-import p2pexample from "dat://rangermauve.hashbase.io/esm.js";
+
+// Load from the dat network
+import datExample from "dat://rangermauve.hashbase.io/esm.js";
+
+// Load from the IPFS network. Might not always be online.
+import ipfsExample from "ipfs://QmTWdgJtp3fXaszsomragX8dPXsqWe5c8uQETy6NkFJ7xA";
 
 example();
-p2pexample();
+datExample();
+ipfsExample();
 ```
 
 You can start a REPL using:
@@ -51,7 +58,7 @@ let {default: example} = await import("https://rangermauve.hashbase.io/esm.js")
 example()
 ```
 
-You can enable the `require` global by adding the `--allow-require` flag. This is disabled by default to encourage use of `import` and to limit what scripts can do. This behaves differently from the usual require in that it's a global and always requires relative to the current working directory.
+You can enable the `require` global by adding the `--allow-require` flag. This is disabled by default to encourage use of `import` and to limit what scripts can do. This behaves differently from the usual require in that it's a global and always requires relative to the current working directory. Instead of adding allow-require, though, you should use [webrunify](https://github.com/brechtcs/webrunify) to build your CommonJS dependencies into a single ESM-compatible bundle.
 
 ## STDIO
 
@@ -117,7 +124,7 @@ Here's a list of the APIs that are supported, or are going to be supported event
 	- [ ] [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event)
 	- [ ] [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent)
 - [x] [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
-- [ ] [WHATWG Streams](https://github.com/MattiasBuelens/web-streams-polyfill)
+- [x] [WHATWG Streams](https://github.com/MattiasBuelens/web-streams-polyfill)
 - [ ] [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)
 - [ ] WebRTC
 - [ ] [Keypress and Mousemove events](https://github.com/TooTallNate/keypress)
@@ -153,7 +160,7 @@ Some browser APIs have been added to the global scope so hopefully a lot of modu
 
 In addition to loading content from `https://` URLs, this loader also supports `dat://` URLs. This way you can download code right from the peer to peer web!
 
-You can still load Node modules by using `require`, but this should only be done for APIs that you absolutely can't get on the web because otherwise your code won't be portable.
+You can still load Node modules by using `require`, but this should only be done for APIs that you absolutely can't get on the web because otherwise your code won't be portable to the web.
 
 PRs for additional protocols are welcome! All you need is an async function that takes a URL, and returns the file content string.
 
@@ -170,7 +177,8 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [ ] Experimental Beaker APIs (does it make sense?)
 		- [ ] DatPeers [Issue](https://github.com/beakerbrowser/dat-node/issues/3)
 		- [ ] Library
-- [ ] IPFS
-	- [ ] Load from IPFS / IPNS URLs
-	- [ ] ipfs global
+- [x] IPFS
+	- [x] Load from IPFS URLs
+	- [x] Load from IPNS URLs
+	- [x] ipfs global
 - [x] CLI arguments: Add them to searchParams for the URL being loaded

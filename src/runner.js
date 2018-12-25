@@ -11,8 +11,9 @@ module.exports = async function main (args) {
 
     // Alternatively, the stderr/out can be filtered below to remove experimental warning
     // '--no-warnings',
-    loaderLocation
-  ].concat(args)
+    loaderLocation,
+    ...args
+  ]
 
   const spawned = spawn(nodeLocation, finalArgs, {
     cwd: process.cwd(),

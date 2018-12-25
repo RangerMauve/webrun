@@ -23,7 +23,7 @@ class Webrun {
       return this.loadModule(url)
     }
 
-    this.addGlobal('_import', () => this._import.bind(this))
+    this.addGlobal('_import', () => this.import.bind(this))
   }
 
   async import (path, base = baseURL) {
@@ -120,7 +120,7 @@ class Webrun {
       context: context,
       initializeImportMeta: (meta, module) => {
         meta.url = module.url.toString()
-        meta._import = (path) => this._import(path, module.url)
+        meta._import = (path) => this.import(path, module.url)
       }
     }
 

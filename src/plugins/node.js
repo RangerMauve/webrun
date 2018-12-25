@@ -1,7 +1,3 @@
-const urlToPath = require('../lib/url-to-path')
-
-const _require = require
-
 const baseURL = new URL('file://')
 baseURL.pathname = `${process.cwd()}/`
 
@@ -58,19 +54,20 @@ function NodePlugin (webrun) {
 
   function getRequire () {
     if (allowRequire) {
-      return require
+      return _require
     } else {
       throw new Error('require() is disabled. Please add the --allow-require flag to enable it')
     }
   }
 
-  function require (path) {
-    if (/^[.\\/]/.test(path)) {
-      const finalPath = urlToPath(new URL(path, baseURL))
-      return _require(finalPath)
-    } else {
-      return _require(path)
-    }
+  function _require (path) {
+    const finalPath = require.resolve(path, {
+      paths: [
+        process.cwd()
+      ]
+    })
+
+    return require(finalPath)
   }
 }
 
