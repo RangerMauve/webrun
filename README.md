@@ -137,9 +137,76 @@ Here's a list of the APIs that are supported, or are going to be supported event
 - [ ] [Web Bluetooth](https://github.com/thegecko/webbluetooth)
 - [ ] [WebMIDI APi](https://github.com/jazz-soft/JZZ)
 
-## API
+## Torrent API
 
-## Plugins
+This API is super experimental and will probably break once we add a filesystem API
+
+```javascript
+const torrent = await Torrent.load(magnetURI)
+
+const file = torrent.files[0]
+
+const buffer = await file.getArrayBuffer()
+
+const decoder = new TextDecoder('utf-8')
+
+const text = decoder.decode(buffer)
+```
+
+### `Torrent.load(URI : String) : Promise<Torrent>`
+
+Load up a torrent via a `magnet:` URI, a `btih://` URL, or a `btpk://` URL.
+
+If it's a magnet link for a mutable torrent that you created, it'll be mutable.
+
+### `Torrent.create(files : Array<ArrayBuffer>, [options: Options]) : Promise<Torrent>`
+
+Create a new mutable torrent from some files. Pass in an array of TypedArrays or ArrayBuffers with `name` and `path` fields. The `options` can contain metadata like the `name` of the torrent, some `comments`, a `createdBy` name, and/or a `createdDate` timestamp.
+
+### `torrent.infoHash : String`
+
+The `infoHash` of the torrent, a unique identifier based on the torrent contents
+
+### `torrent.magnetURI : String`
+
+A magnet URI for the torrent. This can be shared with torrent clients to initiate downloads.
+Mutable torrents will contain an extra field for the public key which will be used to look up updates in clients that support it.
+
+### `torrent.publicKey`
+
+This is present if the torrent is mutable. It's the public key used to look up the torrent
+
+### `torrent.url`
+
+Returns a `btih://` or `ptpk://` URL. Used for loading torrents in browsers.
+
+### `torrent.update(files, [options]) : Promise<Torrent>`
+
+Updates the mutable torrent if you have the secret key.
+
+### `torrent.files : Array<File>`
+
+The list of files in the torrent.
+
+### `file.name : String`
+
+The name of a file
+
+### `file.path : String`
+
+The path of the file within the torrent
+
+### `file.length : Number`
+
+The size of the file in bytes
+
+### `file.progress : Number`
+
+The percentage of the file that's downloaed. A number between `0` and `1`
+
+### `file.getArrayBuffer() : Promise<ArrayBuffer>`
+
+Loads the file as an array buffer. Downloads the content if it doesn't exist already.
 
 ## Help it's not working!
 
@@ -181,4 +248,10 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [x] Load from IPFS URLs
 	- [x] Load from IPNS URLs
 	- [x] ipfs global
+- [x] Bittorrent
+	- [x] `btih://` and `btpk://` protocols
+	- [x] Torrent API
+		- [x] Load from magnet link
+		- [x] Create mutable torrents
+		- [x] Republish mutable torrents
 - [x] CLI arguments: Add them to searchParams for the URL being loaded
