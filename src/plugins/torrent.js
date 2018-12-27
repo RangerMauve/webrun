@@ -20,22 +20,18 @@ function TorrentPlugin (webrun) {
     return getFile(magnet, url.hostname, url.pathname)
   })
 
+  var LOADED_TORRENTS = {}
+
   function getFile (magnet, id, filepath) {
     if (filepath[0] === '/') {
       filepath = filepath.slice(1)
     }
     return new Promise((resolve, reject) => {
-      const client = getClient()
-
-      const path = urlToPath(new URL(id, TORRENTCACHE))
-
-      client.add(magnet, {
-        path
-      }, (torrent) => {
+      getTorrent(magnet, id).then((torrent) => {
         const { files } = torrent
 
         const file = files.find((file) => {
-          return file.path === filepath
+          return file.path.replace(/\\/g, '/') === filepath
         })
 
         if (!file) return reject(new Error(`Couldn't find file ${filepath} in torrent ${magnet}`))
@@ -44,8 +40,32 @@ function TorrentPlugin (webrun) {
           if (err) return reject(err)
           resolve(buffer.toString('utf8'))
         })
+      }).catch(reject)
+    })
+  }
+
+  function getTorrent (magnet, id) {
+    if (LOADED_TORRENTS[id]) {
+      return Promise.resolve(LOADED_TORRENTS[id])
+    }
+
+    var promise = new Promise((resolve, reject) => {
+      const client = getClient()
+
+      const path = urlToPath(new URL(id, TORRENTCACHE))
+
+      client.add(magnet, {
+        path
+      }, (torrent) => {
+        LOADED_TORRENTS[id] = torrent
+
+        resolve(torrent)
       })
     })
+
+    LOADED_TORRENTS[id] = promise
+
+    return promise
   }
 
   function getClient () {
