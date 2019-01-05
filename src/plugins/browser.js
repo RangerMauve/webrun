@@ -47,6 +47,10 @@ function BrowserPlugin (webrun) {
 
   // Networking
   webrun.addGlobal('fetch', () => require('node-fetch'))
+  webrun.addGlobal('fetch', () => require('node-fetch'))
+  webrun.addGlobal('Headers', () => require('node-fetch').Headers)
+  webrun.addGlobal('Request', () => require('node-fetch').Request)
+  webrun.addGlobal('Response', () => require('node-fetch').Response)
   webrun.addGlobal('FormData', () => require('form-data'))
   webrun.addGlobal('URLSearchParams', () => require('url').URLSearchParams)
   webrun.addGlobal('WebSocket', () => require('ws'))
