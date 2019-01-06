@@ -1,6 +1,6 @@
 {
   "name": "@rangermauve/webrun",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "A custom module loader and global shim for Node to make it compatible with the browser.",
   "main": "src/index.js",
   "scripts": {
