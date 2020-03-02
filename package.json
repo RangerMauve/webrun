@@ -1,5 +1,5 @@
 {
-  "name": "@rangermauve/webrun",
+  "name": "webrun",
   "version": "4.0.0",
   "description": "A custom module loader and global shim for Node to make it compatible with the browser.",
   "main": "src/index.js",
