@@ -40,7 +40,7 @@ datExample();
 ipfsExample();
 ```
 
-You can opt-into dat and IPFS support by installing the [webrun-plugin-dat](https://github.com/RangerMauve/webrun-plugin-dat) or [webrun-plugin-ipfs](https://github.com/RangerMauve/webrun-plugin-dat) modules.
+You can opt-into dat and IPFS support by installing the [webrun-plugin-dat](https://github.com/RangerMauve/webrun-plugin-dat) or [webrun-plugin-ipfs](https://github.com/RangerMauve/webrun-plugin-ipfs) modules.
 
 You can start a REPL using:
 
