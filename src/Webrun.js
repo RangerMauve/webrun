@@ -78,13 +78,15 @@ class Webrun {
   }
 
   async run ({ url = null } = {}) {
-    for (let plugin of this._plugins) {
+    this.main = url
+
+    for (const plugin of this._plugins) {
       await plugin(this)
     }
 
     let contextVars = {}
 
-    for (let modifier of this._contextModifiers) {
+    for (const modifier of this._contextModifiers) {
       contextVars = await modifier(contextVars, this)
 
       if (!contextVars) {
@@ -95,7 +97,7 @@ class Webrun {
     // For each global, add a new getter, use memoization so the actual getter only needs to be invoked once it's needed
     const globalNames = Object.keys(this._globals)
     const globalCache = this._globalCache
-    for (let globalName of globalNames) {
+    for (const globalName of globalNames) {
       const getter = this._globals[globalName]
       // Don't use arrow functions to preserve the `this` context
       const getMemoized = function () {
@@ -121,6 +123,7 @@ class Webrun {
       initializeImportMeta: (meta, module) => {
         meta.url = module.url.toString()
         meta._import = (path) => this.import(path, module.url)
+        meta.main = this.main
       }
     }
 

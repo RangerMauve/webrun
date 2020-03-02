@@ -1,5 +1,7 @@
 var repl = require('repl')
 
+process.env.WEBRUN_PLUGIN_IPFS_AUTOLOAD = 'true'
+
 var Webrun = require('../src')
 
 const webrun = new Webrun({

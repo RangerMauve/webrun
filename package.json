@@ -1,6 +1,6 @@
 {
   "name": "@rangermauve/webrun",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "A custom module loader and global shim for Node to make it compatible with the browser.",
   "main": "src/index.js",
   "scripts": {
@@ -37,19 +37,20 @@
     "istanbul": "^1.1.0-alpha.1",
     "node": "^10.8.0",
     "standard": "^12.0.1",
-    "tape": "^4.9.1"
+    "tape": "^4.9.1",
+    "webrun-plugin-dat": "^1.0.0",
+    "webrun-plugin-ipfs": "^1.0.4"
   },
   "dependencies": {
-    "@beaker/dat-node": "github:beakerbrowser/dat-node",
     "@mattiasbuelens/web-streams-polyfill": "^0.2.0",
     "abab": "^2.0.0",
     "child-process-promise": "^2.2.1",
+    "env-paths": "^2.2.0",
     "event-target": "^1.2.3",
     "fake-indexeddb": "^2.0.4",
     "filenamify-url": "^1.0.0",
     "form-data": "^2.3.2",
     "fs-extra": "^7.0.0",
-    "ipfs": "git+ssh://git@github.com/ipfs/js-ipfs.git",
     "leveldown": "^5.0.0-0",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.2.0",

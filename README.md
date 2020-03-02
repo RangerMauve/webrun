@@ -3,18 +3,16 @@ A custom module loader and global shim for Node to make it compatible with the b
 
 The goal is to make code that works in browsers first, but can also run anywhere that Node runs.
 
-**Warning:** This is still in development. Use at your own risk!
-
-Bug reports welcome!
+**NOTE: The module has migrated from `@rangermauve/webrun` to just `webrun`
 
 ## Usage:
 
 ```bash
 # Install the CLI
-npm install -g @rangermauve/webrun
+npm install -g webrun
 
 # Run it without installing globally
-npx @rangermauve/webrun "https://rangermauve.hashbase.io/example.js"
+npx webrun "https://rangermauve.hashbase.io/example.js"
 
 # Load a module from the web and log to the console
 webrun "https://rangermauve.hashbase.io/example.js"
@@ -30,15 +28,19 @@ Then in your JS:
 import example from "https://rangermauve.hashbase.io/esm.js";
 
 // Load from the dat network
+// Requires the `webrun-plugin-dat` module to be installed
 import datExample from "dat://rangermauve.hashbase.io/esm.js";
 
 // Load from the IPFS network. Might not always be online.
+// Requires the `webrun-plugin-ipfs` module to be installed
 import ipfsExample from "ipfs://QmTWdgJtp3fXaszsomragX8dPXsqWe5c8uQETy6NkFJ7xA";
 
 example();
 datExample();
 ipfsExample();
 ```
+
+You can opt-into dat and IPFS support by installing the [webrun-plugin-dat](https://github.com/RangerMauve/webrun-plugin-dat) or [webrun-plugin-ipfs](https://github.com/RangerMauve/webrun-plugin-dat) modules.
 
 You can start a REPL using:
 
@@ -175,7 +177,7 @@ PRs for additional protocols are welcome! All you need is an async function that
 	- [x] Load from Dat URLs
 	- [x] DatArchive global
 	- [ ] Experimental Beaker APIs (does it make sense?)
-		- [ ] DatPeers [Issue](https://github.com/beakerbrowser/dat-node/issues/3)
+		- [x] [DatPeers](https://github.com/RangerMauve/dat-peers)
 		- [ ] Library
 - [x] IPFS
 	- [x] Load from IPFS URLs

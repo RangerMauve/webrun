@@ -12,11 +12,11 @@ export default function example () {
     path, content
   })
 
-	const { hash } = result[0]
-	
-	const url = `ipfs://${hash}`;
+  const { hash } = result[0]
 
-	console.log("Importing from", url)
+  const url = `ipfs://${hash}`
+
+  console.log('Importing from', url)
 
   const { default: example } = await import(url)
 

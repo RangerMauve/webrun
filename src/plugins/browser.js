@@ -47,7 +47,6 @@ function BrowserPlugin (webrun) {
 
   // Networking
   webrun.addGlobal('fetch', () => require('node-fetch'))
-  webrun.addGlobal('fetch', () => require('node-fetch'))
   webrun.addGlobal('Headers', () => require('node-fetch').Headers)
   webrun.addGlobal('Request', () => require('node-fetch').Request)
   webrun.addGlobal('Response', () => require('node-fetch').Response)
